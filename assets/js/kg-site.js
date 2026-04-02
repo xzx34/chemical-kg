@@ -59,6 +59,31 @@
         { name: '氧化与副产物单元', text: '依赖氧化风机和液位控制促进亚硫酸盐氧化，并衔接石膏与废水处理。' },
         { name: '除雾与出口监测单元', text: '通过除雾器和脱硫出口 CEMS 保证进入湿电前的烟气状态。' },
       ],
+      interfaces: [
+        { label: '上游接口', value: 'SCR 出口烟道' },
+        { label: '下游接口', value: 'WESP 入口烟道' },
+        { label: '关键测点', value: '脱硫出口 CEMS' },
+        { label: '主要控制', value: 'pH、密度、液位、氧化风' },
+      ],
+      monitorPoints: [
+        '脱硫出口 CEMS 用于观察 SO2 去除效果与后续入湿电烟气状态',
+        '塔内液位和浆液密度决定循环稳定性与副产物品质',
+        '氧化风量直接影响亚硫酸盐氧化和石膏结晶条件',
+      ],
+      operationFocusCards: [
+        {
+          title: '日常运行',
+          items: ['保持甲乙丙循环泵按负荷组合运行', '结合 pH 与密度调整石灰石浆液补给', '关注除雾器压差和冲洗效果'],
+        },
+        {
+          title: '关键设备',
+          items: ['吸收塔', '浆液循环泵组', '氧化风机', '除雾器'],
+        },
+        {
+          title: '异常关注',
+          items: ['塔内压差升高', '浆液循环中断', '氧化不足导致亚硫酸盐偏高', '除雾器堵塞带出液滴'],
+        },
+      ],
       focus: ['equipment::吸收塔', 'equipment::浆液循环泵', 'equipment::氧化风机', 'equipment::除雾器'],
       layerFocus: {
         overview: ['吸收反应边界', '浆液循环路径', '氧化风与副产物耦合', '脱硫出口监测'],
@@ -82,6 +107,31 @@
         { name: '催化反应单元', text: '以催化剂层为核心完成脱硝反应，决定 NOx 去除效率。' },
         { name: 'SCR 监测单元', text: '布设 SCR 入口与出口测点，观察反应前后 NOx 变化。' },
       ],
+      interfaces: [
+        { label: '上游接口', value: '锅炉出口烟气' },
+        { label: '下游接口', value: 'FGD 入口烟道' },
+        { label: '关键测点', value: 'SCR 入口 / 出口 CEMS' },
+        { label: '主要控制', value: '喷氨量、稀释风、反应温度' },
+      ],
+      monitorPoints: [
+        'SCR 入口 NOx 为喷氨控制提供基准',
+        'SCR 出口 NOx 与氨逃逸共同反映反应效率',
+        '稀释风和阀门动作直接影响喷射均匀性',
+      ],
+      operationFocusCards: [
+        {
+          title: '日常运行',
+          items: ['根据入口 NOx 与负荷调节喷氨', '确认稀释风机投运和风量稳定', '校核 SCR 入口出口测点趋势'],
+        },
+        {
+          title: '关键设备',
+          items: ['氨水喷射系统', '稀释风机', '催化剂层', '喷射阀组'],
+        },
+        {
+          title: '异常关注',
+          items: ['喷氨不均导致出口 NOx 波动', '阀门卡涩或执行机构异常', '催化剂活性下降', 'SCR 出口超标'],
+        },
+      ],
       focus: ['equipment::氨水蒸发器', 'equipment::电动阀', 'equipment::烟道'],
       layerFocus: {
         overview: ['还原剂进入路径', '气固反应边界', 'SCR 前后测点', '与锅炉和 FGD 的接口'],
@@ -104,6 +154,31 @@
         { name: '高压供电单元', text: '提供电场所需高压，决定颗粒荷电与捕集效果。' },
         { name: '冲洗循环单元', text: '围绕冲洗循环与甲乙丙丁阀组，维持内部洁净与通畅。' },
         { name: '出口监测单元', text: '通过湿电出口 CEMS 与烟囱监测衔接末端排放表现。' },
+      ],
+      interfaces: [
+        { label: '上游接口', value: 'FGD 出口烟气' },
+        { label: '下游接口', value: '烟囱排口' },
+        { label: '关键测点', value: '湿电出口 CEMS' },
+        { label: '主要控制', value: '高压供电、冲洗循环、阀组切换' },
+      ],
+      monitorPoints: [
+        '湿电出口粉尘趋势反映末端除尘效果',
+        '冲洗循环和压差变化用于判断内部结垢与堵塞',
+        '高压供电状态决定颗粒荷电和捕集效率',
+      ],
+      operationFocusCards: [
+        {
+          title: '日常运行',
+          items: ['保持高压供电稳定', '按计划执行冲洗循环', '确认甲乙丙丁阀组切换反馈正常'],
+        },
+        {
+          title: '关键设备',
+          items: ['湿电除尘器', '高压供电系统', '冲洗循环泵阀', '湿电出口测点'],
+        },
+        {
+          title: '异常关注',
+          items: ['出口粉尘上升', '电场异常退出', '冲洗循环堵塞', '阀组失灵导致分配异常'],
+        },
       ],
       focus: ['equipment::湿电除尘器', 'equipment::烟道', 'equipment::电动阀'],
       layerFocus: {
@@ -254,6 +329,7 @@
     `).join('');
     const nodes = [{ id: system.id, name: system.title, type: 'System' }, ...pickFocusNodes(system, 4, 3, 3)];
     renderSvg(document.getElementById('kg-system-graph'), nodes, buildSyntheticLinks(system.id, nodes), system.id, system.id);
+    renderSystemSections(system);
   }
 
   function renderSystemLayer(payload, slug, layer) {
@@ -407,6 +483,40 @@
     if (layer === 'operations') return [...(node.preconditions || []).slice(0, 2), ...(node.steps || []).slice(0, 2), '后续将补充标准步骤与条件'].slice(0, 4);
     if (layer === 'faults') return [...(node.symptoms || []).slice(0, 2), ...(node.possible_causes || []).slice(0, 2), ...(node.actions || ['后续将补充处置动作'])].slice(0, 4);
     return ['后续填充'];
+  }
+
+  function renderSystemSections(system) {
+    const infoGrid = document.getElementById('kg-system-info-grid');
+    const focusGrid = document.getElementById('kg-system-focus-grid');
+    if (infoGrid) {
+      infoGrid.innerHTML = `
+        <article class="kg-info-card">
+          <p class="kg-kicker">Interface</p>
+          <h3>工艺接口</h3>
+          <div class="kg-info-list">
+            ${(system.interfaces || []).map((item) => `<div class="kg-detail-item"><strong>${item.label}</strong><div class="kg-muted">${item.value}</div></div>`).join('')}
+          </div>
+        </article>
+        <article class="kg-info-card">
+          <p class="kg-kicker">Monitoring</p>
+          <h3>关键测点</h3>
+          <div class="kg-info-list">
+            ${(system.monitorPoints || []).map((item) => `<div class="kg-detail-item">${item}</div>`).join('')}
+          </div>
+        </article>
+      `;
+    }
+    if (focusGrid) {
+      focusGrid.innerHTML = (system.operationFocusCards || []).map((card) => `
+        <article class="kg-focus-card">
+          <p class="kg-kicker">Focus</p>
+          <h3>${card.title}</h3>
+          <div class="kg-info-list">
+            ${card.items.map((item) => `<div class="kg-detail-item">${item}</div>`).join('')}
+          </div>
+        </article>
+      `).join('');
+    }
   }
 
   function systemHeroMarkup(system) {
