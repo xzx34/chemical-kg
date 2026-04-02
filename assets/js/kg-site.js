@@ -186,9 +186,9 @@
     const systems = allSystems(payload);
     const stats = [
       ['系统分区', systems.length],
-      ['设备节点', systems.reduce((sum, item) => sum + item.equipmentCount, 0)],
-      ['监测板块', MONITOR_POINTS.length],
-      ['最终指标', FINAL_METRICS.length],
+      ['核心设备', systems.reduce((sum, item) => sum + item.equipmentCount, 0)],
+      ['关键测点', MONITOR_POINTS.length],
+      ['排口指标', FINAL_METRICS.length],
     ];
     document.getElementById('kg-stat-grid').innerHTML = stats.map(([label, value]) => `<div class="kg-stat-card"><span>${label}</span><strong>${value}</strong></div>`).join('');
     document.getElementById('kg-process-route').innerHTML = PROCESS_ROUTE.map(processStageMarkup).join('');
@@ -349,7 +349,7 @@
           <p class="kg-muted">${stage.summary}</p>
         </div>
         <ul>${stage.bullets.map((item) => `<li>${item}</li>`).join('')}</ul>
-        ${stage.action ? `<a class="kg-process-stage__action" href="${withBase(stage.action)}">进入板块</a>` : `<span class="kg-process-stage__action">监测板块</span>`}
+        ${stage.action ? `<a class="kg-process-stage__action" href="${withBase(stage.action)}">查看详情</a>` : `<span class="kg-process-stage__action">流程起点</span>`}
       </article>
     `;
   }
@@ -358,14 +358,14 @@
     return `
       <article class="kg-monitor-card">
         <p class="kg-kicker">测点</p>
-        <h3>关键 CEMS 布局</h3>
+        <h3>关键测点</h3>
         <div class="kg-monitor-list">
           ${MONITOR_POINTS.map((item) => `<div class="kg-detail-item"><strong>${item.name}</strong><div class="kg-muted">${item.text}</div></div>`).join('')}
         </div>
       </article>
       <article class="kg-monitor-card">
         <p class="kg-kicker">监测项</p>
-        <h3>烟囱最终在线指标</h3>
+        <h3>排口在线指标</h3>
         <div class="kg-monitor-pill-row">${FINAL_METRICS.map((item) => `<span class="kg-monitor-pill">${item}</span>`).join('')}</div>
       </article>
     `;
