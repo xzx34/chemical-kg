@@ -1,7 +1,9 @@
 main:
   - title: "首页"
     url: "/"
-  - title: "图谱系统"
+  - title: "系统总览"
+    url: "/systems/"
+  - title: "图谱浏览"
     url: "/graph/"
   - title: "证据与方法"
     url: "/method/"

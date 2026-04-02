@@ -1,15 +1,16 @@
 ---
 permalink: /graph/
-title: "图谱系统"
+title: "图谱浏览"
 author_profile: false
 ---
 
 <div class="kg-graph-page" data-page="graph">
-  <section class="kg-section kg-section--graph-head">
+  <section class="kg-page-hero kg-shell" data-reveal="up">
     <div class="kg-section__head kg-section__head--wide">
       <div>
-        <p class="kg-kicker">Knowledge Canvas</p>
-        <h1 class="kg-page-title">图谱系统</h1>
+        <p class="kg-kicker">Knowledge Browser</p>
+        <h1 class="kg-page-title">图谱浏览</h1>
+        <p class="kg-lead">这里专门负责查看 SCR、FGD、WESP 三个系统内部的节点关系，不再承担系统解释页面的职责。</p>
       </div>
       <div class="kg-filter-row">
         <button class="kg-chip is-active" data-filter="all">全部</button>
@@ -20,7 +21,7 @@ author_profile: false
     </div>
   </section>
 
-  <div class="kg-graph-layout">
+  <div class="kg-shell kg-graph-layout" data-reveal="up">
     <aside class="kg-panel">
       <div class="kg-panel__head">
         <p class="kg-kicker">Systems</p>
