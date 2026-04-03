@@ -1,22 +1,26 @@
 <div class="masthead kg-masthead-shell">
   <div class="masthead__inner-wrap kg-masthead">
     <a class="kg-brand" href="{{ '/' | relative_url }}">
-      <span class="kg-brand__mark">KG</span>
+      <span class="kg-brand__mark">FG</span>
       <span class="kg-brand__text">
-        <strong>{{ site.title }}</strong>
-        <small>脱硫 · 脱硝 · 除尘</small>
+        <strong>Flue Gas Atlas</strong>
+        <small>SCR · FGD · WESP</small>
       </span>
     </a>
-    <div class="masthead__menu">
-      <nav id="site-nav" class="greedy-nav">
-        <button><div class="navicon"></div></button>
-        <ul class="visible-links">
-          {% for link in site.data.navigation.main %}
-            <li class="masthead__menu-item"><a href="{{ link.url | relative_url }}">{{ link.title }}</a></li>
-          {% endfor %}
-        </ul>
-        <ul class="hidden-links hidden"></ul>
-      </nav>
-    </div>
+    <nav class="kg-site-nav" aria-label="主导航">
+      {% for link in site.data.navigation.main %}
+        {% assign is_current = false %}
+        {% if link.url == '/' %}
+          {% if page.url == '/' %}
+            {% assign is_current = true %}
+          {% endif %}
+        {% else %}
+          {% if page.url contains link.url %}
+            {% assign is_current = true %}
+          {% endif %}
+        {% endif %}
+        <a class="kg-site-nav__link{% if is_current %} is-current{% endif %}" href="{{ link.url | relative_url }}">{{ link.title }}</a>
+      {% endfor %}
+    </nav>
   </div>
 </div>

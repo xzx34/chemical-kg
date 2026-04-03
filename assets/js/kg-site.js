@@ -440,8 +440,7 @@
         <p>${unit.text}</p>
       </article>
     `).join('');
-    const nodes = [{ id: system.id, name: system.title, type: 'System' }, ...pickFocusNodes(system, 4, 3, 3)];
-    renderSvg(document.getElementById('kg-system-graph'), nodes, buildSyntheticLinks(system.id, nodes), system.id, system.id);
+    renderAnimatedSystemGraph(document.getElementById('kg-system-graph'), system);
     renderSystemSections(system);
     Object.keys(layerLabelMap).forEach((layer) => {
       const grid = document.getElementById(`kg-layer-grid-${layer}`);
@@ -675,16 +674,35 @@
         <p class="kg-eyebrow">${system.code} · ${system.target}</p>
         <h1>${system.title}</h1>
         <p class="kg-lead">${system.description}</p>
+        <div class="kg-system-hero__metrics">
+          <div class="kg-system-metric"><span>设备簇</span><strong>${system.equipmentCount}</strong></div>
+          <div class="kg-system-metric"><span>运行动作</span><strong>${system.operationCount}</strong></div>
+          <div class="kg-system-metric"><span>异常模式</span><strong>${system.faultCount}</strong></div>
+        </div>
         <div class="kg-pill-row">
           <span class="kg-pill">${system.route}</span>
-          <span class="kg-pill">单页四段结构</span>
-          <span class="kg-pill">测点纳入系统框架</span>
+          <span class="kg-pill">动态知识图谱</span>
+          <span class="kg-pill">单页章节叙事</span>
         </div>
       </div>
-      <div class="kg-system-badges">
-        <div class="kg-system-badge"><span class="kg-kicker">目标</span><strong>${system.target}</strong></div>
-        <div class="kg-system-badge"><span class="kg-kicker">位置</span><strong>${system.route}</strong></div>
-        <div class="kg-system-badge"><span class="kg-kicker">文档</span><strong>${system.documentCount}</strong></div>
+      <div class="kg-system-hero__visual">
+        <div class="kg-motion-card">
+          <div class="kg-motion-card__head">
+            <div>
+              <p class="kg-kicker">Knowledge Motion</p>
+              <h3>知识图谱流动图</h3>
+            </div>
+            <span class="kg-motion-card__code">${system.code}</span>
+          </div>
+          <div class="kg-motion-canvas">
+            <svg id="kg-system-graph" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div class="kg-system-badges">
+            <div class="kg-system-badge"><span class="kg-kicker">目标</span><strong>${system.target}</strong></div>
+            <div class="kg-system-badge"><span class="kg-kicker">位置</span><strong>${system.route}</strong></div>
+            <div class="kg-system-badge"><span class="kg-kicker">文档</span><strong>${system.documentCount}</strong></div>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -725,7 +743,7 @@
 
   function layerAnchorMarkup() {
     return Object.entries(layerLabelMap).map(([layerSlug, label], index) => `
-      <a class="kg-layer-card" href="#section-${layerSlug}">
+      <a class="kg-layer-card kg-layer-anchor" href="#section-${layerSlug}">
         <div class="kg-layer-card__head">
           <div>
             <p class="kg-kicker">Section ${index + 1}</p>
@@ -736,6 +754,106 @@
         <div class="kg-layer-card__list"><span>${layerDescriptions[layerSlug]}</span></div>
       </a>
     `).join('');
+  }
+
+  function renderAnimatedSystemGraph(svg, system) {
+    if (!svg) return;
+    const nodes = [{ id: system.id, name: system.title, type: 'System' }, ...pickFocusNodes(system, 4, 3, 3)];
+    const links = buildSyntheticLinks(system.id, nodes);
+    const grouped = { System: nodes.filter((node) => node.type === 'System'), Equipment: nodes.filter((node) => node.type === 'Equipment'), Operation: nodes.filter((node) => node.type === 'Operation'), Fault: nodes.filter((node) => node.type === 'Fault') };
+    const baseLayout = new Map();
+    if (grouped.System[0]) baseLayout.set(grouped.System[0].id, { x: 360, y: 310, r: 58 });
+    placeGroup(grouped.Equipment, baseLayout, { cx: 260, cy: 310, rx: 150, ry: 175, r: 28 });
+    placeGroup(grouped.Operation, baseLayout, { cx: 690, cy: 210, rx: 170, ry: 105, r: 22 });
+    placeGroup(grouped.Fault, baseLayout, { cx: 690, cy: 425, rx: 170, ry: 120, r: 22 });
+    svg.innerHTML = '';
+
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    defs.innerHTML = `
+      <filter id="kg-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="blur"></feGaussianBlur>
+        <feMerge>
+          <feMergeNode in="blur"></feMergeNode>
+          <feMergeNode in="SourceGraphic"></feMergeNode>
+        </feMerge>
+      </filter>
+    `;
+    svg.appendChild(defs);
+
+    const linkLayer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const nodeLayer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    svg.appendChild(linkLayer);
+    svg.appendChild(nodeLayer);
+
+    const nodeStates = nodes.map((node, index) => ({
+      node,
+      index,
+      base: baseLayout.get(node.id),
+      x: 0,
+      y: 0,
+    })).filter((item) => item.base);
+
+    const lines = links.map((link) => {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('class', 'kg-svg-link kg-svg-link--motion');
+      linkLayer.appendChild(line);
+      return { link, el: line };
+    });
+
+    const nodeEls = nodeStates.map((state) => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', `kg-svg-node kg-svg-node--motion kg-type-${state.node.type}`);
+      const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      halo.setAttribute('class', 'kg-svg-node__halo');
+      halo.setAttribute('r', state.base.r + 8);
+      halo.setAttribute('filter', 'url(#kg-glow)');
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', state.base.r);
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('dy', '0.35em');
+      text.textContent = state.node.name.length > 8 ? `${state.node.name.slice(0, 8)}…` : state.node.name;
+      g.appendChild(halo);
+      g.appendChild(circle);
+      g.appendChild(text);
+      nodeLayer.appendChild(g);
+      return { id: state.node.id, el: g };
+    });
+
+    let currentFocus = null;
+    const focusIds = nodeStates.map((item) => item.node.id);
+    const startedAt = performance.now();
+
+    function tick(now) {
+      const t = (now - startedAt) / 1000;
+      const focusId = focusIds[Math.floor(t / 2.2) % focusIds.length];
+      if (focusId !== currentFocus) {
+        currentFocus = focusId;
+        nodeEls.forEach((item) => item.el.classList.toggle('is-selected', item.id === currentFocus));
+        lines.forEach((item) => item.el.classList.toggle('is-focus', item.link.source === currentFocus || item.link.target === currentFocus));
+      }
+
+      nodeStates.forEach((state, idx) => {
+        const driftX = Math.sin(t * 0.9 + idx * 0.8) * (state.node.type === 'System' ? 6 : 10);
+        const driftY = Math.cos(t * 1.1 + idx * 0.7) * (state.node.type === 'System' ? 6 : 12);
+        state.x = state.base.x + driftX;
+        state.y = state.base.y + driftY;
+        nodeEls[idx].el.setAttribute('transform', `translate(${state.x}, ${state.y})`);
+      });
+
+      lines.forEach(({ link, el }) => {
+        const a = nodeStates.find((item) => item.node.id === link.source);
+        const b = nodeStates.find((item) => item.node.id === link.target);
+        if (!a || !b) return;
+        el.setAttribute('x1', a.x);
+        el.setAttribute('y1', a.y);
+        el.setAttribute('x2', b.x);
+        el.setAttribute('y2', b.y);
+      });
+
+      window.requestAnimationFrame(tick);
+    }
+
+    window.requestAnimationFrame(tick);
   }
 
   function pickFocusNodes(system, equipmentCount, operationCount, faultCount) {
