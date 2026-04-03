@@ -17,8 +17,8 @@ redirect_from:
         覆盖 SCR 脱硝、FGD 湿法脱硫、WESP 湿式电除尘与烟囱 CEMS 在线监测，聚焦工艺链、关键设备、运行操作与异常处置。
       </p>
       <div class="kg-hero__actions">
-        <a class="kg-button kg-button--primary" href="{{ '/systems/' | relative_url }}">查看处理链</a>
-        <a class="kg-button kg-button--ghost" href="{{ '/graph/' | relative_url }}">查看系统图谱</a>
+        <a class="kg-button kg-button--primary" href="#kg-home-route">查看处理链</a>
+        <a class="kg-button kg-button--ghost" href="#kg-home-systems">进入系统</a>
       </div>
     </div>
     <div class="kg-home-hero__aside" data-reveal="up" data-delay="120">
@@ -37,24 +37,24 @@ redirect_from:
     </div>
   </section>
 
-  <section class="kg-shell kg-section" data-reveal="up">
+  <section class="kg-shell kg-section" data-reveal="up" id="kg-home-route">
     <div class="kg-section__head kg-section__head--wide">
       <div>
         <p class="kg-kicker">Process Route</p>
         <h2>烟气处理路径</h2>
       </div>
-      <a class="kg-inline-link" href="{{ '/systems/' | relative_url }}">查看系统分解</a>
+      <span class="kg-inline-link kg-inline-link--static">BLR -> SCR -> FGD -> WESP -> 烟囱</span>
     </div>
     <div class="kg-process-route" id="kg-process-route"></div>
   </section>
 
-  <section class="kg-shell kg-section" data-reveal="up">
+  <section class="kg-shell kg-section" data-reveal="up" id="kg-home-systems">
     <div class="kg-section__head kg-section__head--wide">
       <div>
         <p class="kg-kicker">Systems</p>
         <h2>系统入口</h2>
       </div>
-      <a class="kg-inline-link" href="{{ '/systems/' | relative_url }}">进入系统总览</a>
+      <span class="kg-inline-link kg-inline-link--static">选择一个方向进入单系统页面</span>
     </div>
     <div class="kg-system-grid kg-system-grid--hero" id="kg-system-grid"></div>
   </section>
@@ -65,21 +65,5 @@ redirect_from:
       <h2>关键监测与排口指标</h2>
     </div>
     <div class="kg-monitor-board" id="kg-monitor-board"></div>
-  </section>
-
-  <section class="kg-shell kg-section kg-section--spotlight" data-reveal="up">
-    <div class="kg-section__head kg-section__head--wide">
-      <div>
-        <p class="kg-kicker">Knowledge View</p>
-        <h2>系统关系预览</h2>
-      </div>
-      <a class="kg-inline-link" href="{{ '/graph/' | relative_url }}">进入可视化图谱</a>
-    </div>
-    <div class="kg-preview-panel">
-      <div class="kg-preview-canvas">
-        <svg id="kg-home-graph" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
-      </div>
-      <div class="kg-preview-detail" id="kg-preview-detail"></div>
-    </div>
   </section>
 </div>

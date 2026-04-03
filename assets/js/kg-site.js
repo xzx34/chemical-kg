@@ -40,7 +40,7 @@
       target: '最终排口',
       summary: '烟囱入口设置最终在线监测点，形成全链监管闭环。',
       bullets: ['SO2', 'NOx', '粉尘', 'O2', '温度 / 压力 / 流量 / 湿度'],
-      action: '/method/',
+      action: null,
     },
   ];
   const SYSTEM_DEFS = {
@@ -387,11 +387,6 @@
     document.getElementById('kg-process-route').innerHTML = PROCESS_ROUTE.map(processStageMarkup).join('');
     document.getElementById('kg-system-grid').innerHTML = systems.map(systemCardMarkup).join('');
     document.getElementById('kg-monitor-board').innerHTML = monitorBoardMarkup();
-
-    const currentSystem = systems[0];
-    const nodes = [{ id: currentSystem.id, name: currentSystem.title, type: 'System' }, ...currentSystem.equipment.slice(0, 4), ...currentSystem.operations.slice(0, 3), ...currentSystem.faults.slice(0, 3)];
-    renderSvg(document.getElementById('kg-home-graph'), nodes, buildSyntheticLinks(currentSystem.id, nodes), currentSystem.id, currentSystem.id);
-    renderAggregateDetail(document.getElementById('kg-preview-detail'), currentSystem);
   }
 
   function renderSystemsOverview(payload) {
@@ -433,7 +428,7 @@
   function renderSystemHome(payload, slug) {
     const system = aggregateSystem(payload, slug);
     document.getElementById('kg-system-hero').innerHTML = systemHeroMarkup(system);
-    document.getElementById('kg-layer-entry').innerHTML = layerEntryMarkup(slug);
+    document.getElementById('kg-layer-entry').innerHTML = layerAnchorMarkup();
     document.getElementById('kg-unit-grid').innerHTML = system.units.map((unit, index) => `
       <article class="kg-unit-card">
         <div class="kg-layer-card__head">
@@ -448,6 +443,14 @@
     const nodes = [{ id: system.id, name: system.title, type: 'System' }, ...pickFocusNodes(system, 4, 3, 3)];
     renderSvg(document.getElementById('kg-system-graph'), nodes, buildSyntheticLinks(system.id, nodes), system.id, system.id);
     renderSystemSections(system);
+    Object.keys(layerLabelMap).forEach((layer) => {
+      const grid = document.getElementById(`kg-layer-grid-${layer}`);
+      if (grid) grid.innerHTML = buildLayerCards(system, layer).join('');
+      renderLayerSections(system, layer, {
+        summaryGridId: `kg-layer-summary-grid-${layer}`,
+        detailGridId: `kg-layer-detail-grid-${layer}`,
+      });
+    });
   }
 
   function renderSystemLayer(payload, slug, layer) {
@@ -638,9 +641,9 @@
     }
   }
 
-  function renderLayerSections(system, layer) {
-    const summaryGrid = document.getElementById('kg-layer-summary-grid');
-    const detailGrid = document.getElementById('kg-layer-detail-grid');
+  function renderLayerSections(system, layer, options) {
+    const summaryGrid = document.getElementById(options?.summaryGridId || 'kg-layer-summary-grid');
+    const detailGrid = document.getElementById(options?.detailGridId || 'kg-layer-detail-grid');
     const panel = (system.layerPanels || {})[layer] || { summary: [], detail: [] };
     if (summaryGrid) {
       summaryGrid.innerHTML = (panel.summary || []).map((card) => `
@@ -674,8 +677,8 @@
         <p class="kg-lead">${system.description}</p>
         <div class="kg-pill-row">
           <span class="kg-pill">${system.route}</span>
-          <span class="kg-pill">四层导航</span>
-          <span class="kg-pill">测点纳入系统层</span>
+          <span class="kg-pill">单页四段结构</span>
+          <span class="kg-pill">测点纳入系统框架</span>
         </div>
       </div>
       <div class="kg-system-badges">
@@ -711,6 +714,21 @@
         <div class="kg-layer-card__head">
           <div>
             <p class="kg-kicker">Layer ${index + 1}</p>
+            <h3>${label}</h3>
+          </div>
+          <span class="kg-layer-card__index">0${index + 1}</span>
+        </div>
+        <div class="kg-layer-card__list"><span>${layerDescriptions[layerSlug]}</span></div>
+      </a>
+    `).join('');
+  }
+
+  function layerAnchorMarkup() {
+    return Object.entries(layerLabelMap).map(([layerSlug, label], index) => `
+      <a class="kg-layer-card" href="#section-${layerSlug}">
+        <div class="kg-layer-card__head">
+          <div>
+            <p class="kg-kicker">Section ${index + 1}</p>
             <h3>${label}</h3>
           </div>
           <span class="kg-layer-card__index">0${index + 1}</span>
