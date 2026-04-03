@@ -84,6 +84,45 @@
           items: ['塔内压差升高', '浆液循环中断', '氧化不足导致亚硫酸盐偏高', '除雾器堵塞带出液滴'],
         },
       ],
+      layerPanels: {
+        overview: {
+          summary: [
+            { title: '上游边界', items: ['承接 SCR 出口烟气', '烟气状态直接影响脱硫吸收负荷'] },
+            { title: '下游衔接', items: ['脱硫出口进入 WESP', '出口 SO2 与湿度影响后续除尘表现'] },
+          ],
+          detail: [
+            { title: '系统层重点', items: ['吸收塔承担主反应', '循环泵维持液气接触', '氧化风与副产物处理共同决定结晶与浆液品质'] },
+            { title: '观测指标', items: ['pH', '密度', '液位', '脱硫出口 CEMS'] },
+          ],
+        },
+        equipment: {
+          summary: [
+            { title: '设备簇', items: ['吸收塔与除雾器', '甲乙丙浆液循环泵', '氧化风机'] },
+            { title: '设备角色', items: ['吸收 SO2', '维持循环喷淋', '促进氧化结晶'] },
+          ],
+          detail: [
+            { title: '关键设备观察点', items: ['循环泵组合运行', '除雾器压差', '风机风量反馈', '塔内液位与密度'] },
+          ],
+        },
+        operations: {
+          summary: [
+            { title: '核心动作', items: ['循环泵切换', 'pH / 密度调整', '氧化风投运'] },
+            { title: '控制目标', items: ['保持 SO2 去除率', '维持浆液品质', '避免除雾带液'] },
+          ],
+          detail: [
+            { title: '推荐操作顺序', items: ['确认塔内液位与浆液品质', '调整循环泵和石灰石补给', '投氧化风并观察出口测点', '根据压差与出口趋势调整除雾冲洗'] },
+          ],
+        },
+        faults: {
+          summary: [
+            { title: '典型异常', items: ['塔内压差高', '浆液循环异常', '氧化不足'] },
+            { title: '排查方向', items: ['先看出口 SO2 与压差', '再看循环泵和液位', '最后看氧化风与除雾器'] },
+          ],
+          detail: [
+            { title: '处置优先级', items: ['确认出口测点和压差变化', '检查循环泵状态与阀位', '核对氧化风与浆液品质', '必要时安排除雾冲洗或负荷调整'] },
+          ],
+        },
+      },
       focus: ['equipment::吸收塔', 'equipment::浆液循环泵', 'equipment::氧化风机', 'equipment::除雾器'],
       layerFocus: {
         overview: ['吸收反应边界', '浆液循环路径', '氧化风与副产物耦合', '脱硫出口监测'],
@@ -132,6 +171,45 @@
           items: ['喷氨不均导致出口 NOx 波动', '阀门卡涩或执行机构异常', '催化剂活性下降', 'SCR 出口超标'],
         },
       ],
+      layerPanels: {
+        overview: {
+          summary: [
+            { title: '上游边界', items: ['锅炉出口烟气进入 SCR', '入口 NOx 和烟温决定喷氨控制窗口'] },
+            { title: '下游衔接', items: ['SCR 出口进入 FGD', '出口 NOx 趋势影响后续排放链判断'] },
+          ],
+          detail: [
+            { title: '系统层重点', items: ['氨水喷射单元与稀释风共同决定喷射均匀性', '催化剂层是反应效率核心区段', 'SCR 入口 / 出口测点提供反应前后对比'] },
+            { title: '观测指标', items: ['入口 NOx', '出口 NOx', '烟温', '阀门开度与风量反馈'] },
+          ],
+        },
+        equipment: {
+          summary: [
+            { title: '设备簇', items: ['氨水蒸发器与喷射阀组', '稀释风机', 'SCR 烟道与执行机构'] },
+            { title: '设备角色', items: ['提供还原剂', '提供混合风量', '保证喷射与反应边界稳定'] },
+          ],
+          detail: [
+            { title: '关键设备观察点', items: ['氨水蒸发器供给稳定性', '阀门动作反馈', '风机运行状态', '烟道测点布置'] },
+          ],
+        },
+        operations: {
+          summary: [
+            { title: '核心动作', items: ['喷氨投运', '联锁启停', '阀门切换'] },
+            { title: '控制目标', items: ['出口 NOx 稳定', '避免喷氨过量', '保持稀释风和温度窗口'] },
+          ],
+          detail: [
+            { title: '推荐操作顺序', items: ['确认入口 NOx 与负荷', '投稀释风与喷氨系统', '观察 SCR 出口反馈', '根据偏差修正喷氨量'] },
+          ],
+        },
+        faults: {
+          summary: [
+            { title: '典型异常', items: ['出口 NOx 偏高', '喷氨不均', '阀门异常'] },
+            { title: '排查方向', items: ['先看测点趋势', '再看喷射与风量', '最后检查催化反应区'] },
+          ],
+          detail: [
+            { title: '处置优先级', items: ['确认测点是否可信', '检查喷射阀组与稀释风机', '评估催化剂与反应温度', '必要时回退喷氨策略'] },
+          ],
+        },
+      },
       focus: ['equipment::氨水蒸发器', 'equipment::电动阀', 'equipment::烟道'],
       layerFocus: {
         overview: ['还原剂进入路径', '气固反应边界', 'SCR 前后测点', '与锅炉和 FGD 的接口'],
@@ -180,6 +258,45 @@
           items: ['出口粉尘上升', '电场异常退出', '冲洗循环堵塞', '阀组失灵导致分配异常'],
         },
       ],
+      layerPanels: {
+        overview: {
+          summary: [
+            { title: '上游边界', items: ['承接 FGD 出口烟气', '关注含雾烟气进入湿电前的状态'] },
+            { title: '下游衔接', items: ['湿电出口接烟囱排口', '出口粉尘与烟囱最终指标直接相关'] },
+          ],
+          detail: [
+            { title: '系统层重点', items: ['湿电本体负责末端捕集', '高压供电决定电场效果', '冲洗循环决定内部洁净与压差'] },
+            { title: '观测指标', items: ['湿电出口 CEMS', '压差', '高压供电状态', '冲洗循环反馈'] },
+          ],
+        },
+        equipment: {
+          summary: [
+            { title: '设备簇', items: ['湿电除尘器本体', '高压供电系统', '冲洗阀组'] },
+            { title: '设备角色', items: ['末端捕集颗粒', '维持电场', '完成内壁冲洗分配'] },
+          ],
+          detail: [
+            { title: '关键设备观察点', items: ['高压状态是否稳定', '阀组反馈是否一致', '冲洗循环是否通畅', '出口测点趋势'] },
+          ],
+        },
+        operations: {
+          summary: [
+            { title: '核心动作', items: ['高压投运', '冲洗切换', '阀组确认'] },
+            { title: '控制目标', items: ['保持粉尘达标', '避免内部堵塞', '维持高压稳定'] },
+          ],
+          detail: [
+            { title: '推荐操作顺序', items: ['确认入口烟气状态', '投高压并检查反馈', '按计划切换冲洗循环', '观察湿电出口与烟囱指标'] },
+          ],
+        },
+        faults: {
+          summary: [
+            { title: '典型异常', items: ['出口粉尘升高', '压差高', '电场异常退出'] },
+            { title: '排查方向', items: ['先看出口趋势', '再看高压供电', '最后看冲洗循环与阀组'] },
+          ],
+          detail: [
+            { title: '处置优先级', items: ['确认湿电出口与烟囱测点', '检查高压供电状态', '核对冲洗循环与阀组反馈', '必要时安排停运冲洗与检修'] },
+          ],
+        },
+      },
       focus: ['equipment::湿电除尘器', 'equipment::烟道', 'equipment::电动阀'],
       layerFocus: {
         overview: ['湿电入口边界', '高压供电路径', '冲洗循环路径', '出口排放监测'],
@@ -246,6 +363,7 @@
       units: def.units,
       focus: def.focus,
       layerFocus: def.layerFocus,
+      layerPanels: def.layerPanels,
       equipment,
       operations,
       faults,
@@ -353,6 +471,7 @@
     document.getElementById('kg-layer-nav').innerHTML = layerEntryMarkup(slug, layer);
     document.getElementById('kg-layer-title').textContent = `${system.title} · ${layerLabelMap[layer]}`;
     document.getElementById('kg-layer-grid').innerHTML = buildLayerCards(system, layer).join('');
+    renderLayerSections(system, layer);
   }
 
   function renderGraphPage(payload) {
@@ -510,6 +629,34 @@
       focusGrid.innerHTML = (system.operationFocusCards || []).map((card) => `
         <article class="kg-focus-card">
           <p class="kg-kicker">Focus</p>
+          <h3>${card.title}</h3>
+          <div class="kg-info-list">
+            ${card.items.map((item) => `<div class="kg-detail-item">${item}</div>`).join('')}
+          </div>
+        </article>
+      `).join('');
+    }
+  }
+
+  function renderLayerSections(system, layer) {
+    const summaryGrid = document.getElementById('kg-layer-summary-grid');
+    const detailGrid = document.getElementById('kg-layer-detail-grid');
+    const panel = (system.layerPanels || {})[layer] || { summary: [], detail: [] };
+    if (summaryGrid) {
+      summaryGrid.innerHTML = (panel.summary || []).map((card) => `
+        <article class="kg-layer-detail-card">
+          <p class="kg-kicker">Summary</p>
+          <h3>${card.title}</h3>
+          <div class="kg-info-list">
+            ${card.items.map((item) => `<div class="kg-detail-item">${item}</div>`).join('')}
+          </div>
+        </article>
+      `).join('');
+    }
+    if (detailGrid) {
+      detailGrid.innerHTML = (panel.detail || []).map((card) => `
+        <article class="kg-layer-detail-card">
+          <p class="kg-kicker">Detail</p>
           <h3>${card.title}</h3>
           <div class="kg-info-list">
             ${card.items.map((item) => `<div class="kg-detail-item">${item}</div>`).join('')}

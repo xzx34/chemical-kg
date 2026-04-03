@@ -24,4 +24,12 @@ author_profile: false
     </div>
     <div class="kg-layer-grid" id="kg-layer-grid"></div>
   </section>
+
+  <section class="kg-shell kg-section" data-reveal="up">
+    <div class="kg-layer-detail-grid" id="kg-layer-summary-grid"></div>
+  </section>
+
+  <section class="kg-shell kg-section" data-reveal="up">
+    <div class="kg-layer-detail-grid kg-layer-detail-grid--wide" id="kg-layer-detail-grid"></div>
+  </section>
 </div>
